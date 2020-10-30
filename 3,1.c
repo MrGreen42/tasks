@@ -32,9 +32,11 @@ int main(int argc, char *argv[]) {
                 perror("Cannot open file to write\n");
                 return 1;
         }
-	while ((nbytes = read(fildes_r, buf, BUFSIZE)) > 0) {
+	size_t nbytes_r;
+	while ((nbytes_r = read(fildes_r, buf, BUFSIZE)) > 0) {
+		nbytes = nbytes_r;
 		while (nbytes) {
-			nbytes_w = write(fildes_w, buf, nbytes);
+			nbytes_w = write(fildes_w, &buf[nbytes_r - nbytes], nbytes);
 			nbytes = nbytes - nbytes_w;
 		}
 	}

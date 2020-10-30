@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <time.h>
 
 int main(int argc, char *argv[]) {
 	if (argc != 2) {
@@ -17,6 +18,11 @@ int main(int argc, char *argv[]) {
 
 	printf("Mode: %06o\n", stat_buf.st_mode);
 	printf("Size: %llu\n", (unsigned long long)stat_buf.st_size);
-	printf("Used space: %llu\n", (unsigned long long)stat_buf.st_blocks * 512);
+	printf("Used space: %llu\n", (unsigned long long)stat_buf.st_blocks * S_BLKSIZE);
+	printf("Last status change:       %s", ctime(&stat_buf.st_ctime));
+        printf("Last file access:         %s", ctime(&stat_buf.st_atime));
+        printf("Last file modification:   %s", ctime(&stat_buf.st_mtime));
+
+
 	return 0;
 }

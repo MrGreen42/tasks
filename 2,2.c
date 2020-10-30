@@ -16,16 +16,11 @@ int main(int argc, char *argv[]) {
 		
 		return 1;
 	}
-	int size = strlen(argv[2]);
-	ssize_t nbytes =  write(fildes, argv[2], size);
-	if (nbytes == -1) {
-		printf ("Error with writing\n");
-		perror("error2");
+	int nbytes = 1;
+	dprintf(fildes,"%s", argv[2]);
+        if (nbytes < 0) {
+                perror("Error");
                 return 1;
-	}
-	if ((int) nbytes <  size) {
-                printf ("Writing is unsucessful\n");
-        
         }
 	cfildes = close(fildes);
 	if (cfildes != 0) {

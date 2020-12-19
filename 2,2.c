@@ -5,25 +5,22 @@
 #include <string.h>
 
 int main(int argc, char *argv[]) {
-	int fildes, cfildes = 0;
 	if (argc != 3) {
-		printf ("Incorrect Usage");
+		printf ("Incorrect Usage. Programm needs file and string, which will be written into it");
 		return 1;
 	}
-	fildes = open(argv[1], O_APPEND | O_RDWR | O_CREAT, 00600);
+	int fildes = open(argv[1], O_APPEND | O_RDWR | O_CREAT, 0600);
 	if (fildes == -1) {
 		perror("Cannot create or modify file\n");
 		
 		return 1;
 	}
-	int nbytes = 1;
-	dprintf(fildes,"%s", argv[2]);
-        if (nbytes < 0) {
-                perror("Error");
+	
+	if (dprintf(fildes,"%s", argv[2]) < 0) {
+                perror("Error with writing");
                 return 1;
         }
-	cfildes = close(fildes);
-	if (cfildes != 0) {
+	if (close(fildes) != 0) {
 		perror("Unsucessful closing");
                 return 1;
 	}

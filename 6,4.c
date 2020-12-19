@@ -6,29 +6,6 @@
 #include <string.h>
 
 
-char* my_strcat(char *src1, char *src2, char *src3) {
-	
-	size_t i;
-	char dest[1024];
-	for (i = 0 ;src1[i] != '\0' ; i++) {
-        	dest[i] = src1[i];
-
-	}
-	size_t len = strlen(src1);
-	for (i = 0 ;src2[i] != '\0' ; i++) {
-                dest[len + i] = src2[i];
-	}
-	len = len + strlen(src2);
-        
-        for (i = 0 ;src3[i] != '\0' ; i++) {
-                dest[len + i] = src3[i];
-	}
-        dest[len + i] = '\0';
-
-        return dest;
-}
-
-
 
 
 int output(char *dir_name, int level) {
@@ -43,11 +20,7 @@ int output(char *dir_name, int level) {
 	}
 	struct dirent *dir;
 	struct stat stat_buf;
-	char* slash;
-	char* dir_name2;
-	slash = "/";
 	
-
 	
 	while ((dir = readdir(dirp)) != NULL ) {
 		while (i > 0) {
@@ -87,11 +60,9 @@ int output(char *dir_name, int level) {
 		printf("Name: %s \n", dir->d_name);
 		
 		if ((ifdir == 1) && (cmp1 != 0) && (cmp2 != 0)) {
-			dir_name2 = my_strcat(dir_name, slash, dir->d_name);
-
-			printf("%s \n", dir_name2);
-			output(dir_name2, level + 1);
-		
+			char *dpath;
+                	asprintf(&dpath, "%s/%s", dir_name, dir->d_name);
+			output(dpath, level + 1);
 		}
 
 		ifdir = 0;

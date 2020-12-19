@@ -37,17 +37,23 @@ int main(int argc, char *argv[]) {
 		nbytes = nbytes_r;
 		while (nbytes) {
 			nbytes_w = write(fildes_w, &buf[nbytes_r - nbytes], nbytes);
+			if (nbytes_w == -1) {
+				perror("Error with writing\n");
+				return 1;
+			}
 			nbytes = nbytes - nbytes_w;
 		}
 	}
-        int cfildes_r = close(fildes_r);
-        if (cfildes_r != 0) {
-                printf ("Unsucessful closing\n");
+	if (nbytes_r == -1) {
+		perror("Error with reading\n");
+		return 1;
+	}
+        if (close(fildes_r) != 0) {
+                perror("Unsucessful closing\n");
                 return 1;
         }
-	int cfildes_w = close(fildes_w);
-        if (cfildes_w != 0) {
-                printf ("Unsucessful closing\n");
+	if (close(fildes_w) != 0) {
+                perror("Unsucessful closing\n");
                 return 1;
         }
         return 0;
